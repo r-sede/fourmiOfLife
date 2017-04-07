@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/r-sede/fourmiOfLife#readme",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "jquery": "^3.2.1"
   }
 }
