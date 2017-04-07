@@ -31,6 +31,34 @@ function deplacements(){
 	}
 }
 
+function generate(col, lin, nbrFourm){
+	var arr = genAntArr(col,lin);
+	for (var i = 0; i <nbrFourm; i++) {
+		var rndx= Math.round(Math.random()*(col-1));
+		var rndy= Math.round(Math.random()*(lin-1));
+		console.log("x",rndx,"Y",rndy);
+	 	if(arr[rndy][rndx]){
+	 		i--;
+	 		continue;
+	 	}
+	 	arr[rndy][rndx]=true;
+	 }
+	return arr;
+}
+
+
+function genAntArr(col,lin){
+	var res=[];
+	var curline=[];
+	for(var yy = 0; yy<lin;yy++){
+		for (var xx = 0; xx < col; xx++) {
+			curline.push(false);
+		}
+		res.push(curline);
+		curline = [];
+	}
+	return res;
+}
 
 
 
@@ -42,8 +70,12 @@ function deplacements(){
 
 
 
-
-
-generateTable(8, 8);
-placeFourmi(25, 8, 8);
-deplacements();
+// generateTable(8, 8);
+// placeFourmi(25, 8, 8);
+// deplacements();
+var a  = generate(12,6,5);
+console.log(a);
+// a[2][1]=true; );
+// var arrr = genAntArr(10,7);
+// arrr[2][1]=true;
+// console.log(arrr);
