@@ -1,0 +1,11 @@
+:2015
+
+gzip
+
+ext    .html
+
+
+
+header / Cache-Control "no-cache, no-store, must-revalidate"
+header / Pragma "no-cache"
+
