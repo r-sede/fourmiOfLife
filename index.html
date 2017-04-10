@@ -6,10 +6,13 @@
 	 <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-	<input type="text" id="numberFourmi" placeholder="enter number of Fourmi">
-	<input type="text" id="inputcol" placeholder="colonne">
-	<input type="text" id="inputline" placeholder="line">
-	<input type="button" id="generate" value="create_life">
+	<form id="genForm">
+		
+	<input type="number" id="numberFourmi" placeholder="enter number of Fourmi" required>
+	<input type="number" id="inputcol"  placeholder="colonne" required>
+	<input type="number" id="inputline" placeholder="line" required>
+	<input type="submit" id="generate" value="create_life">
+	</form>
 	<table class="table table-bordered">
 		<tbody id="vue">
 			
