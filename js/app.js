@@ -1,141 +1,116 @@
+function afficheFourmi(arr){
+	$('.cell').html('&nbsp');
 
+	for(var i = 0;i<arr.length;i++){
+		var cX = arr[i].posX;
+		var cY = arr[i].posY;
 
-var terrain = genererTablJs(1, 10,5);
-var col= 10;
-var line=5;
-
-affiche(10,5, terrain);
-$('#generate').click(function() {
-	
-setInterval(function(){
-
-
-
- 	for (var i = 0; i < line; i++) {
- 		for (var j = 0; j < col; j++) {
- 			if( terrain[i][j].type === 'fourmi'){
- 				terrain[i][j].move();
- 			}
- 		}
- 	
- 	}
-
-	affiche(10, 5, terrain);
-
- },1000);
-
-});
-
-function deplacement() {
-	var a = this.x;
-	var b = this.y;
-	var destinationX;
-	var destinationY;
-	console.log(a);
-	console.log(b);
-	var result = Math.floor(Math.random()*3);
-		if (result === 0){
-			destinationY = b-1;
-			destinationX = a;
-		}else if(result === 1){
-			destinationY = b;
-			destinationX = a +1;
-		}else if (result === 2){
-			destinationY = b +1;
-			destinationX = a;
-		}else if(result === 3){
-			destinationY = b;
-			destinationX = a-1;
-		}
-		console.log(destinationX);
-		console.log(destinationY);
-
-		if (destinationY <0 || destinationY > col -1){
-			this.move();
-		}else if (destinationX < 0 || destinationX > line -1){
-			this.move();
-		}else{
-			// TODOsi la case est occuper par une fourmi combat !!!
-			//
-			terrain[destinationY][destinationX] = {"type": 'fourmi',
-													"x": destinationX,
-													"y" : destinationY,
-													"carac": '#',
-													"move": deplacement};
-			terrain[b][a] = {"type": 'casevide',
-								"x": a,
-								"y": b,
-								"carac": "&nbsp"};
-		}
-
+		var valString = cX+''+cY;
+		//console.log('valString',valString);
+		$(".cell[value='"+valString+"']").html(arr[i].cara);
+	}
 }
 
-
-
-function affiche(col, line, fourmi) {
+function afficheTableauVide(colo,line){
 	$('#vue').html('');
-	for (var i = 0; i < line; i++) {
+		for (var i = 0; i < line; i++) {
 		var curling = '<tr>';
-			for (var j = 0; j < col; j++) {
-				curling += '<td>'+ fourmi[i][j].carac +'</td>';
+			for (var j = 0; j < colo; j++) {
+				curling += '<td class="cell" value="'+j+''+i+'"></td>';
 			}
 		curling += '</tr>';
 		$('#vue').append(curling);
 	}
+
+}
+
+function isAFourmiAlreadyHere(x,y,arr){
+	for (var i = 0;i<arr.length;i++){
+		if(arr[i].posX===x && arr[i].posY===y){
+			return true;
+		}
+	}
+	return false;
 }
 
 
-function genererTablJs(val, col, line) {
-	var tableGeneral = [];
+function populate(w,h,nbr){
+	var curFourmiArr = [];
+	for (var i = 0; i < nbr; i++) {
+		var rndX = Math.floor(Math.random()*w);
+		var rndY = Math.floor(Math.random()*h);
 
-	
-	for (var k = 0; k < line; k++) {
-		var tableSecondaire = [];
-		for (var l = 0; l < col; l++) {
-			var caseVide = {
-				"type": 'casevide',
-				"x": l,
-				"y": k,
-				"carac": "&nbsp"};
-			tableSecondaire.push(caseVide);
+		if(isAFourmiAlreadyHere(rndX,rndY,curFourmiArr)){
+			i--;
+			continue;
+		}else{
+			var curFourmi = new Fourmi(rndX,rndY,w,h);
+			curFourmiArr.push(curFourmi);
 		}
-		//tableSecondaire.fill(caseVide, 0, col-1);
-		tableGeneral.push(tableSecondaire);
-	}
-
-
-	for (var i = 0; i < val; i++) {
-		var rndY = Math.floor(Math.random()*col);
-		var rndX = Math.floor(Math.random()*line);
-		//console.log(rndX);
-		//console.log(rndY);
-		var fourmi = {
-			"type": 'fourmi',
-			"x": rndY,
-			"y" : rndX,
-			"carac": '#',
-			"move": deplacement
-		};
-		//console.log(col);
-		//console.log(line);
-		console.log(rndY);
-		console.log(rndX);
-		console.log(tableGeneral);
-			if (tableGeneral[rndX][rndY].type === 'fourmi'){
-				i--;
-				continue;
-			}
-		tableGeneral[rndX][rndY] = fourmi;
 		
 	}
-	return tableGeneral;
+	return curFourmiArr;
+}
+
+function myLoop(arr){
+	//update
+	for(var i = 0;i<arr.length;i++){
+		arr[i].move();
+	}
+	//render
+	afficheFourmi(arr);
 }
 
 
+var Fourmi = function(x,y,w,h){
+	this.posX = x;
+	this.posY = y;
+	this.w = w;
+	this.h = h;
+	this.type = "fourmi";
+	this.cara = "#";
+};
 
+Fourmi.prototype.move = function(){
 
+	var destinationX;
+	var destinationY;
 
+	//choisir une direction au hasard 
+	var result = Math.random();
+		if (result >= 0.75){
+			destinationY = this.posY-1;
+			destinationX = this.posX;
+		}else if(result >= 0.5){
+			destinationY = this.posY;
+			destinationX = this.posX +1;
+		}else if (result >= 0.25){
+			destinationY = this.posY +1;
+			destinationX = this.posX;
+		}else{
+			destinationY = this.posY;
+			destinationX = this.posX-1;
+		}
+		// console.log(destinationX);
+		// console.log(destinationY);
 
-//console.log(terrain[6] === undefined);
-//console.log(terrain[1][1] === undefined);
+		if (destinationY <0 || destinationY > this.h -1 || destinationX < 0 || destinationX > this.w -1){
+			this.move();
+		}else{
+			//TODO check if there already a Fourmi
+			this.posX = destinationX;
+			this.posY = destinationY;
+		}
+};
+
+$(document).ready(function(){
+	var inter = 200;
+	var col = 10;
+	var lin = 5;
+	var nbrDeFourmi = 4;
+	var fourmisArray = populate(col,lin,nbrDeFourmi);
+	afficheTableauVide(col,lin);
+	//console.log(fourmisArray);
+	setInterval( function(){myLoop(fourmisArray);}, inter );
+});
 
