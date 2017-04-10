@@ -7,11 +7,15 @@
 </head>
 <body>
 	<form id="genForm">
-		
-	<input type="number" id="numberFourmi" placeholder="enter number of Fourmi" required>
-	<input type="number" id="inputcol"  placeholder="colonne" required>
-	<input type="number" id="inputline" placeholder="line" required>
-	<input type="submit" id="generate" value="create_life">
+	<label for="numberFourmi">fourmis</label>	
+	<input type="number" id="numberFourmi" placeholder="enter number of Fourmi" value="4" required>
+	<label for="inputcol">col</label>
+	<input type="number" id="inputcol"  placeholder="colonne" value="10" required>
+	<label for="inputline">lin</label>
+	<input type="number" id="inputline" placeholder="line" value="5" required>
+	<label for="inputint">ms</label>
+	<input type="number" id="inputint" placeholder="interval" value="200" required>
+	<input type="submit" id="generate" value="run!">
 	</form>
 	<table class="table table-bordered">
 		<tbody id="vue">

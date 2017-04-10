@@ -78,13 +78,13 @@ Fourmi.prototype.move = function(){
 
 	//choisir une direction au hasard 
 	var result = Math.random();
-		if (result >= 0.75){
+		if (result > 0.75){
 			destinationY = this.posY-1;
 			destinationX = this.posX;
-		}else if(result >= 0.5){
+		}else if(result > 0.5){
 			destinationY = this.posY;
 			destinationX = this.posX +1;
-		}else if (result >= 0.25){
+		}else if (result > 0.25){
 			destinationY = this.posY +1;
 			destinationX = this.posX;
 		}else{
@@ -110,6 +110,19 @@ $(document).ready(function(){
 	var nbrDeFourmi = 4;
 	var fourmisArray = populate(col,lin,nbrDeFourmi);
 	afficheTableauVide(col,lin);
-	//console.log(fourmisArray);
+
+$('#genForm').on('submit', function(e){
+	console.log('submit');
+
+	nbrDeFourmi = $('#numberFourmi').val();
+	col = $('#inputcol').val();
+	lin = $('#inputline').val();
+	inter = $('#inputint').val();
+	fourmisArray = populate(col,lin,nbrDeFourmi);
+	afficheTableauVide(col,lin);
 	setInterval( function(){myLoop(fourmisArray);}, inter );
+	e.preventDefault();
+});
+
+	//console.log(fourmisArray);
 });
