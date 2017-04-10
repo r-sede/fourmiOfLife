@@ -1,81 +1,134 @@
-function generateTable(line, col){
+
+
+var fourmiJs = genererTablJs(1, 10,5);
+var col= 10;
+var line=5;
+// $('#generate').click(function() {
+	
+// setInterval(function(){
+//  	for (var i = 0; i < line; i++) {
+//  		for (var j = 0; j < col; j++) {
+//  			if( fourmiJs[i][j].type === 'fourmi'){
+//  				fourmiJs[i][j].move();
+//  			}
+//  		}
+ 	
+//  	}
+
+
+//  },1000);
+// genererTableHtml(10, 5, fourmiJs);
+
+// });
+
+function deplacement() {
+	var a = this.x;
+	var b = this.y;
+	var destinationX;
+	var destinationY;
+	console.log(a);
+	console.log(b);
+	var result = Math.floor(Math.random()*3);
+		if (result === 0){
+			destinationY = b-1;
+			destinationX = a;
+		}else if(result === 1){
+			destinationY = b;
+			destinationX = a +1;
+		}else if (result === 2){
+			destinationY = b +1;
+			destinationX = a;
+		}else if(result === 3){
+			destinationY = b;
+			destinationX = a-1;
+		}
+		console.log(destinationX);
+		console.log(destinationY);
+
+		if (destinationY <0 || destinationY > col -1){
+			this.move();
+		}else if (destinationX < 0 || destinationX > line -1){
+			this.move();
+		}else{
+			fourmiJs[destinationY][destinationX] = {"type": 'fourmi',
+													"y" : destinationY,
+													"x": destinationX,
+													"carac": '#',
+													"move": deplacement};
+			fourmiJs[b][a] = {"type": 'casevide',
+								"x": a,
+								"y": b,
+								"carac": "&nbsp"};
+		}
+
+}
+
+
+
+function genererTableHtml(col, line, fourmi) {
+	$('#vue').html('');
 	for (var i = 0; i < line; i++) {
-		$("#vue").append("<tr></tr>");	
-		for (var j = 0;j  < col; j++) {
-		$("#vue tr:last-child").append('<td data-position="'+[i]+[j]+'">'+"&nbsp"+'</td>');
+		var curling = '<tr>';
+			for (var j = 0; j < col; j++) {
+				curling += '<td>'+ fourmi[i][j].carac +'</td>';
+			}
+		curling += '</tr>';
+		$('#vue').append(curling);
+	}
+}
+
+
+function genererTablJs(val, col, line) {
+	var tableGeneral = [];
+	for (var k = 0; k < line; k++) {
+		var tableSecondaire = [];
+		for (var l = 0; l < col; l++) {
+			var caseVide = {
+				"type": 'casevide',
+				"x": l,
+				"y": k,
+				"carac": "&nbsp"};
+			tableSecondaire.push(caseVide);
 		}
+		//tableSecondaire.fill(caseVide, 0, col-1);
+		tableGeneral.push(tableSecondaire);
 	}
 
-}
+
+	for (var i = 0; i < val; i++) {
+		var rndY = Math.floor(Math.random()*col);
+		var rndX = Math.floor(Math.random()*line);
+		//console.log(rndX);
+		//console.log(rndY);
+		var fourmi = {
+			"type": 'fourmi',
+			"x": rndY,
+			"y" : rndX,
+			"carac": '#',
+			"move": deplacement
+		};
+		//console.log(col);
+		//console.log(line);
+		console.log(rndY);
+		console.log(rndX);
+		console.log(tableGeneral);
+			if (tableGeneral[rndX][rndY].type === 'fourmi'){
+				i--;
+				continue;
+			}
+		tableGeneral[rndX][rndY] = fourmi;
 		
-function placeFourmi(val, line, col){
-	for (var i = 0; i <val; i++) {
-	var rndx= Math.round(Math.random()*(col-1));
-	var rndy= Math.round(Math.random()*(line-1));
-	//console.log(rndx);
-	//console.log(rndy);
-	var cible= $("#vue").find('[data-position="'+rndx+''+rndy+'"]');
-	if(cible.html()==='<span class="Fourmi">#</span>'){
-		i--;
-		continue;
 	}
-	cible.html('<span class="Fourmi">#</span>');
-	}
-}
-
-function deplacements(){
-	var allTd=$("td");
-	for (var i = 0; i <allTd.length; i++) {
-		var x=allTd[i];
-		console.log(x);
-	}
-}
-
-function generate(col, lin, nbrFourm){
-	var arr = genAntArr(col,lin);
-	for (var i = 0; i <nbrFourm; i++) {
-		var rndx= Math.round(Math.random()*(col-1));
-		var rndy= Math.round(Math.random()*(lin-1));
-		console.log("x",rndx,"Y",rndy);
-	 	if(arr[rndy][rndx]){
-	 		i--;
-	 		continue;
-	 	}
-	 	arr[rndy][rndx]=true;
-	 }
-	return arr;
-}
-
-
-function genAntArr(col,lin){
-	var res=[];
-	var curline=[];
-	for(var yy = 0; yy<lin;yy++){
-		for (var xx = 0; xx < col; xx++) {
-			curline.push(false);
-		}
-		res.push(curline);
-		curline = [];
-	}
-	return res;
+	return tableGeneral;
 }
 
 
 
 
 
+genererTableHtml(10,5, fourmiJs);
 
 
+//console.log(fourmiJs[6] === undefined);
+//console.log(fourmiJs[1][1] === undefined);
 
-
-
-
-// generateTable(8, 8);
-// placeFourmi(25, 8, 8);
-// deplacements();
-var a  = generate(12,6,5);
-console.log(a);
-// a[2][1]=true; );
-// var arrr = genAntArr(10,7);
-// arrr[2][1]=true;
-// console.log(arrr);
