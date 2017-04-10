@@ -1,25 +1,30 @@
 
 
-var fourmiJs = genererTablJs(1, 10,5);
+var terrain = genererTablJs(1, 10,5);
 var col= 10;
 var line=5;
-// $('#generate').click(function() {
+
+affiche(10,5, terrain);
+$('#generate').click(function() {
 	
-// setInterval(function(){
-//  	for (var i = 0; i < line; i++) {
-//  		for (var j = 0; j < col; j++) {
-//  			if( fourmiJs[i][j].type === 'fourmi'){
-//  				fourmiJs[i][j].move();
-//  			}
-//  		}
+setInterval(function(){
+
+
+
+ 	for (var i = 0; i < line; i++) {
+ 		for (var j = 0; j < col; j++) {
+ 			if( terrain[i][j].type === 'fourmi'){
+ 				terrain[i][j].move();
+ 			}
+ 		}
  	
-//  	}
+ 	}
 
+	affiche(10, 5, terrain);
 
-//  },1000);
-// genererTableHtml(10, 5, fourmiJs);
+ },1000);
 
-// });
+});
 
 function deplacement() {
 	var a = this.x;
@@ -50,12 +55,14 @@ function deplacement() {
 		}else if (destinationX < 0 || destinationX > line -1){
 			this.move();
 		}else{
-			fourmiJs[destinationY][destinationX] = {"type": 'fourmi',
-													"y" : destinationY,
+			// TODOsi la case est occuper par une fourmi combat !!!
+			//
+			terrain[destinationY][destinationX] = {"type": 'fourmi',
 													"x": destinationX,
+													"y" : destinationY,
 													"carac": '#',
 													"move": deplacement};
-			fourmiJs[b][a] = {"type": 'casevide',
+			terrain[b][a] = {"type": 'casevide',
 								"x": a,
 								"y": b,
 								"carac": "&nbsp"};
@@ -65,7 +72,7 @@ function deplacement() {
 
 
 
-function genererTableHtml(col, line, fourmi) {
+function affiche(col, line, fourmi) {
 	$('#vue').html('');
 	for (var i = 0; i < line; i++) {
 		var curling = '<tr>';
@@ -80,6 +87,8 @@ function genererTableHtml(col, line, fourmi) {
 
 function genererTablJs(val, col, line) {
 	var tableGeneral = [];
+
+	
 	for (var k = 0; k < line; k++) {
 		var tableSecondaire = [];
 		for (var l = 0; l < col; l++) {
@@ -126,9 +135,7 @@ function genererTablJs(val, col, line) {
 
 
 
-genererTableHtml(10,5, fourmiJs);
 
-
-//console.log(fourmiJs[6] === undefined);
-//console.log(fourmiJs[1][1] === undefined);
+//console.log(terrain[6] === undefined);
+//console.log(terrain[1][1] === undefined);
 
